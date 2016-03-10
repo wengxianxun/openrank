@@ -11,24 +11,36 @@
 </head>
 <body> 
 
-<section id="ranking"> <span id="ranking_title">我的排行：3</span>
+<section id="ranking"> 
+<!-- <{foreach $findone as $k => $v}> -->
+        <{foreach $findone[0] as $vk => $vv}>
+           <span id="ranking_title">我的排行：<{$vv}></span>
+        <{/foreach}>  
+<!-- <{/foreach}> -->
+
   <section id="ranking_list">
   <{if !empty($findall)}>
  
   <{foreach $findall as $k => $v}>
     <section class="box">
-      <section class="col_1" title="1"><{$k}></section>
-      <section class="col_2"><img src="images/pic.jpg"  /></section>
-      <section class="col_3">漫画之迷</section>
-      <section class="col_4">5000</section>
+      <{if $k==0}>
+      <section class="col_1" title="1"><{$k+1}></section>
+      <{elseif $k==1}>
+      <section class="col_1" title="2"><{$k+1}></section>
+      <{elseif $k==2}>
+      <section class="col_1" title="3"><{$k+1}></section>
+      <{else}>
+      <section class="col_1"><{$k+1}></section>
+      <{/if}>
+      <section class="col_2"><img src="http://mt1.baidu.com/timg?wh_rate=0&wapiknow&quality=100&size=w250&sec=0&di=0c0fa9be9a9b0dff61fac3d1ca18e061&src=http%3A%2F%2Fh.hiphotos.baidu.com%2Fzhidao%2Fwh%253D800%252C450%2Fsign%3D3efb27ebce177f3e1061f40540ff17f3%2Fcaef76094b36acafc1ee23a17bd98d1001e99c65.jpg"  /></section>
+      <section class="col_3"><{$v.user_name}></section>
+      <section class="col_4"><{$v.score_score}></section>
     </section>
  
-  <{/foreach}>
-</table>
-<{else}>
-<p>没有结果！</p>
+  <{/foreach}> 
+<{else}> 
 <{/if}>
-    <section class="box">
+    <!-- <section class="box">
       <section class="col_1" title="1">1</section>
       <section class="col_2"><img src="images/pic.jpg"  /></section>
       <section class="col_3">漫画之迷</section>
@@ -63,9 +75,9 @@
       <section class="col_2"><img src="images/pic.jpg"  /></section>
       <section class="col_3">漫画之迷</section>
       <section class="col_4">5000</section>
-    </section>
+    </section> -->
   </section>
-  <a id="play_game" href="#" title="开始游戏">开始游戏</a> </section>
-<a id="return_back" href="#" title="返回">返回</a>
+  <!-- <a id="play_game" href="#" title="开始游戏">开始游戏</a> </section>
+<a id="return_back" href="#" title="返回">返回</a> -->
 </body>
 </html>

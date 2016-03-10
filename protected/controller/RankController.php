@@ -30,16 +30,32 @@ class RankController extends BaseController {
 		$score = new RankScore();
 	 	$user_openid 	= $_GET["user_openid"];
 		$app_id 		= $_GET["app_id"];
-		$this->findone = $score->find(array("user_openid"=>$user_openid,"app_id"=>$app_id));
-		//查询排行榜列表
 
-		// 准备SQL，查询uid大于3的
-		$sql = "SELECT * FROM rank_score WHERE app_id = :appid";
+		//*********************************************//
+		//               查询我的排名
+		//*********************************************//
+		$sql = "SELECT count(*)
+				FROM rank_score 
+				WHERE score_score > (SELECT score_score FROM rank_score WHERE user_openid=:useropenid AND app_id = :appid) AND app_id = :appid";
 
-		// query第一个参数是SQL语句，第二个参数是绑定参数的列表
+		// $sql = "SELECT * from rank_score WHERE app_id = 12";
+		$this->findone = $score->query($sql, array(
+			":useropenid" 	=> $user_openid,  
+			":appid" 		=> $app_id, 
+		));;
+
+		//*********************************************//
+		//               查询排行榜列表
+		//*********************************************//
+		$sql = "SELECT s.score_score,u.user_name,u.user_logo 
+				FROM rank_score AS s,rank_user AS u 
+				WHERE s.user_openid=u.user_openid AND s.app_id = :appid 
+				ORDER BY  s.score_score DESC 
+				LIMIT 20";
 		$this->findall = $score->query($sql, array(
-			":appid" => $app_id, // 注意这种绑定参数的做法，可以防止SQL注入
+			":appid" => $app_id, 
 		));
+
 
 		$this->display("Rank_index.html");
 	}
